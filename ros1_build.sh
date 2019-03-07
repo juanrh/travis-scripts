@@ -38,8 +38,9 @@ then
             mv coverage.info /shared
             ;;
         "python")
-            cd /"$ROS_DISTRO"_ws/
-            mv build/${PACKAGE_NAME}/.coverage /shared
+            cd /"$ROS_DISTRO"_ws/build/${PACKAGE_NAME}
+            coverage xml
+            mv coverage.xml /shared
             ;;
     esac
 fi
