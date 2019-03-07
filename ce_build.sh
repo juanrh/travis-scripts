@@ -26,6 +26,6 @@ docker exec "$ROS_DISTRO"-container /bin/bash \
 # upload coverage report to codecov
 if [ -z "${NO_TEST}" ];
 then
-  cd /shared
+  cd shared
   bash <(curl -s https://codecov.io/bash) -Z -F "${ROS_DISTRO},ROS_${ROS_VERSION}"
 fi
