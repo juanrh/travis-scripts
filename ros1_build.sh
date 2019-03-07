@@ -28,9 +28,8 @@ then
     colcon test-result --all
 
     # get unit test code coverage result
-    RESOLVED_PACKAGE_LANG=${PACKAGE_LANG:-cpp}
+    PACKAGE_LANG=${PACKAGE_LANG:-cpp}
     echo "PACKAGE_LANG = [${PACKAGE_LANG}]"
-    echo "RESOLVED_PACKAGE_LANG = [${RESOLVED_PACKAGE_LANG}]"
     case ${RESOLVED_PACKAGE_LANG} in 
         "cpp") 
             lcov --capture --directory . --output-file coverage.info
