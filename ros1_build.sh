@@ -40,7 +40,7 @@ then
         "python")
             cd /"$ROS_DISTRO"_ws/build/${PACKAGE_NAME}
             coverage xml
-            mv coverage.xml /shared
+            cp coverage.xml /shared/coverage.info
             ;;
     esac
 fi
