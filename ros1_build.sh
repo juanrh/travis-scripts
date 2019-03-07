@@ -39,7 +39,7 @@ then
             ;;
         "python")
             cd /"$ROS_DISTRO"_ws/
-            mv build/${PACKAGE_NAME}/.coverage /shared/coverage.info
+            mv build/${PACKAGE_NAME}/.coverage /shared
             ;;
     esac
 fi
