@@ -50,13 +50,3 @@ then
             ;;
     esac
 fi
-
-
-PACKAGE_NAMES = [cw_metrics_common, cw_logs_common] 
-
-PACKAGES_WITH_EXTRA_TEST_BUILD_TARGET = [cw_metrics_common]
-
----
-
-NEED_MAKE_TESTS 
-TEST_PACKAGES_TO_BUILD
