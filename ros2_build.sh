@@ -15,9 +15,12 @@ rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -r -y
 colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_FLAGS='-fprofile-arcs -ftest-coverage' -DCMAKE_C_FLAGS='-fprofile-arcs -ftest-coverage'
 if [ -z "${NO_TEST}" ];
 then
-    if [ ! -z "${PACKAGE_NAME}" ] && [ "$ROS_VERSION" == "1" ];
+    if [ "$ROS_VERSION" == "1" ]
     then
-      colcon build --packages-select $PACKAGE_NAME --cmake-target tests
+      for PACKAGE_NAME in ${PACKAGES_WITH_EXTRA_TEST_BUILD_TARGET[@]}
+      do 
+          colcon build --packages-select "${PACKAGE_NAME}" --cmake-target tests
+      done 
     fi
 
     # run unit tests

@@ -12,7 +12,8 @@ docker pull "ros:${ROS_DISTRO}-ros-core"
 # run docker container
 docker run -v "${PWD}/shared:/shared" \
   -e ROS_DISTRO="${ROS_DISTRO}" \
-  -e PACKAGE_NAME="${PACKAGE_NAME}" \
+  -e PACKAGE_NAMES="${PACKAGE_NAMES}" \
+  -e PACKAGES_WITH_EXTRA_TEST_BUILD_TARGET="${PACKAGES_WITH_EXTRA_TEST_BUILD_TARGET}" \
   -e ROS_VERSION="${ROS_VERSION}" \
   -e NO_TEST="${NO_TEST}" \
   -e PACKAGE_LANG="${PACKAGE_LANG:-cpp}" \

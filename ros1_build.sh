@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+PACKAGE_NAMES=($PACKAGE_NAMES)
+PACKAGES_WITH_EXTRA_TEST_BUILD_TARGET=($PACKAGES_WITH_EXTRA_TEST_BUILD_TARGET)
+
 # install dependencies
 apt update && apt install -y lcov python3-pip libgtest-dev cmake && rosdep update
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
@@ -17,11 +20,10 @@ rosdep install --from-paths src --ignore-src --rosdistro "${ROS_DISTRO}" -r -y
 colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_FLAGS='-fprofile-arcs -ftest-coverage' -DCMAKE_C_FLAGS='-fprofile-arcs -ftest-coverage'
 if [ -z "${NO_TEST}" ];
 then
-    if [ ! -z "${PACKAGE_NAME}" ];
-    then
-      colcon build --packages-select "${PACKAGE_NAME}" --cmake-target tests
-    fi
-
+    for PACKAGE_NAME in ${PACKAGES_WITH_EXTRA_TEST_BUILD_TARGET[@]}
+    do 
+        colcon build --packages-select "${PACKAGE_NAME}" --cmake-target tests
+    done 
     # run unit tests
     . ./install/setup.sh
     colcon test
@@ -37,9 +39,24 @@ then
             mv coverage.info /shared
             ;;
         "python")
-            cd "/${ROS_DISTRO}_ws/build/${PACKAGE_NAME}"
-            coverage xml
-            cp coverage.xml /shared/coverage.info
+            for PACKAGE_NAME in ${PACKAGE_NAMES[@]}
+            do 
+                cd "/${ROS_DISTRO}_ws/build/${PACKAGE_NAME}"
+                coverage xml
+                mkdir -p "/shared/${PACKAGE_NAME}"
+                cp coverage.xml "/shared/${PACKAGE_NAME}/coverage.info"
+                cd - 
+            done 
             ;;
     esac
 fi
+
+
+PACKAGE_NAMES = [cw_metrics_common, cw_logs_common] 
+
+PACKAGES_WITH_EXTRA_TEST_BUILD_TARGET = [cw_metrics_common]
+
+---
+
+NEED_MAKE_TESTS 
+TEST_PACKAGES_TO_BUILD
